@@ -1,0 +1,43 @@
+{
+  "name": "promised-land",
+  "description": "Utilize LucidJS, BaconJS and Bluebird to beat your event flow once and for all.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "./src/land.coffee",
+  "keywords": [
+    "Event Emitter",
+    "FRP",
+    "Promise"
+  ],
+  "author": {
+    "name": "FredyC",
+    "email": "fredy.c@seznam.cz"
+  },
+  "bugs": {
+    "url": "https://github.com/FredyC/promised-land/issues"
+  },
+  "repository": [
+    {
+      "type": "git",
+      "url": "https://github.com/FredyC/promised-land.git"
+    }
+  ],
+  "dependencies": {
+    "baconjs": "^0.7.10",
+    "bluebird": "^1.2.3",
+    "eventemitter2": "^0.4.13"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.18.2",
+    "coffeeify": "^0.6.0",
+    "browserify": "^3.44.1",
+    "coffee-script": "^1.7.1",
+    "sinon-chai": "^2.5.0",
+    "sinon": "^1.9.1",
+    "chai-as-promised": "^4.1.1"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha -b -w"
+  }
+}
