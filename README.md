@@ -1,6 +1,8 @@
 # Promised Land
 
-Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] on the way. [![Build Status](https://travis-ci.org/FredyC/promised-land.svg)](https://travis-ci.org/FredyC/promised-land)
+Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] on the way. 
+
+[![Build Status](https://travis-ci.org/FredyC/promised-land.svg)](https://travis-ci.org/FredyC/promised-land)[![Dependencies status](https://david-dm.org/FredyC/promised-land/status.svg)](https://david-dm.org/FredyC/promised-land#info=dependencies)[![devDependency Status](https://david-dm.org/FredyC/promised-land/dev-status.svg)](https://david-dm.org/FredyC/promised-land#info=devDependencies)
 
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [BaconJS]:https://github.com/baconjs/bacon.js
