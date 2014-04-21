@@ -20,12 +20,10 @@
   "bugs": {
     "url": "https://github.com/FredyC/promised-land/issues"
   },
-  "repository": [
-    {
-      "type": "git",
-      "url": "https://github.com/FredyC/promised-land.git"
-    }
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FredyC/promised-land.git"
+  },
   "dependencies": {
     "baconjs": "^0.7.10",
     "bluebird": "^1.2.3",
