@@ -5,11 +5,13 @@
   "license": "MIT",
   "main": "./src/land.coffee",
   "keywords": [
-    "EventEmitter",
-    "FRP",
-    "Promise",
-    "BaconJS",
-    "Bluebird"
+    "events",
+    "eventemitter",
+    "pubsub",
+    "frp",
+    "baconjs",
+    "promise",
+    "bluebird"    
   ],
   "author": {
     "name": "FredyC",
