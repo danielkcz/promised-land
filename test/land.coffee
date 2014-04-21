@@ -72,3 +72,59 @@ describe 'Promised land', ->
 		it 'should reject promise when event is emitted with Error instance', ->
 			@land.emit 'test', new Error('testing')
 			@land.promise('test').should.be.rejectedWith Error, /testing/
+
+	describe '.promiseAll', ->
+
+		Promise = require 'bluebird'
+
+		beforeEach ->
+			@land = Land.create()
+
+		it 'should respond to `promise` method', ->
+			@land.should.respondTo "promiseAll"
+
+		it 'should return promise', ->
+			actual = @land.promiseAll().catch ->
+			Promise.is(actual).should.be.true
+
+		it 'should reject promise when no arguments passed in', ->
+			@land.promiseAll().should.be.rejectedWith(TypeError, /no arguments given/)
+
+		it 'should reject promise when all arguments are null', ->
+			@land.promiseAll(null, null, null).should.be.rejectedWith(TypeError, /no arguments given/)
+
+		it 'should fulfill promise when all events are emitted', ->
+			@land.emit 'test1'
+			@land.promiseAll('test1', 'test2', 'test3').should.be.fulfilled
+			@land.emit 'test2'
+			@land.emit 'test3'
+
+		it 'should skip falsy arguments while fulfilling promise', ->
+			@land.emit 'test'
+			@land.promiseAll(false, null, 'test').should.be.fulfilled
+
+		it 'should utilize Promise.all method', ->
+			spy = sinon.spy Promise, 'all'
+			@land.promiseAll('test')
+			spy.should.have.been.calledOnce
+			spy.restore()
+
+	describe '.stream', ->
+
+		Bacon = require 'baconjs'
+
+		beforeEach ->
+			@land = Land.create()
+
+		it 'should respond to `stream` method', ->
+			@land.should.respondTo "stream"
+
+		it 'should return Bacon event stream', ->
+			@land.stream().should.be.an.instanceof Bacon.EventStream
+
+		it 'should create stream from passed in event', ->
+			spy = sinon.spy()
+			@land.stream('test').onValue spy
+			@land.emit 'test'
+			spy.should.have.been.calledOnce
+

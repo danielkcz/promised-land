@@ -21,7 +21,7 @@ PromisedLand = ->
 	# (usually async) state in the application.
 	land.promise = (ev) ->
 		unless arguments.length and ev isnt null
-			return Promise.reject new TypeError 'missing event argument'
+			return Promise.reject new TypeError 'missing event argument for promise call'
 
 		# Promise was requested in the past, return it immediately
 		return promises[ev] if promises[ev]
@@ -31,8 +31,17 @@ PromisedLand = ->
 		return promises[ev] = new Promise (resolve, reject) ->
 			land.once ev, (val) -> promiseResolver val, resolve, reject
 
-	land.promiseAll = (evs...) ->
-		return Promise.all evs.map (ev) -> land.promise(ev)
+	land.promiseAll = ->
+		# Get promises for string
+		Array.prototype.reduce.call arguments, (list, ev) ->
+			ev and list.push(land.promise ev)
+			return list
+		, list = []
+
+		unless list.length
+			return Promise.reject new TypeError 'no arguments given for promiseAll call'
+
+		return Promise.all list
 
 	# Decide if promise should be resolved or rejected based on value
 	promiseResolver = (value, resolve, reject) ->
