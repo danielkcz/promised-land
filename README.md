@@ -4,6 +4,8 @@ Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] o
 
 [![Build Status](https://travis-ci.org/FredyC/promised-land.svg)](https://travis-ci.org/FredyC/promised-land)[![Dependencies status](https://david-dm.org/FredyC/promised-land/status.svg)](https://david-dm.org/FredyC/promised-land#info=dependencies)[![devDependency Status](https://david-dm.org/FredyC/promised-land/dev-status.svg)](https://david-dm.org/FredyC/promised-land#info=devDependencies)
 
+[![NPM](https://nodei.co/npm/promised-land.png)](https://nodei.co/npm/promised-land/)
+
 [Bluebird]:https://github.com/petkaantonov/bluebird
 [BaconJS]:https://github.com/baconjs/bacon.js
 [Bacon]:https://github.com/baconjs/bacon.js
@@ -65,7 +67,7 @@ That's right. It's simple as that! You might wonder what is it good for. Well, j
 
 Promise resolution is made when the event is emitted for the first time. Any subsequent emits doesn't change state of the promise nor the value. It's nature of the Promise, but keep this in mind as only one part of your code should emit that particular event.
 
-For the actual Promise implementation I have picked [Bluebird] library. It's not very well know just yet, but I am actively using it and I love it! Whole library is  at your service at `require('promised-land').Promise` in case you want to create your own promises with ease.
+For the actual Promise implementation I have picked [Bluebird] library. It's not very well known just yet, but I am actively using it and I love it! Whole library is  at your service at `require('promised-land').Promise` in case you want to create your own promises with ease.
 
 ### Repeated events
 
