@@ -71,7 +71,7 @@ That's right. It's simple as that! You might wonder what is it good for. Well, j
 
 Promise resolution is made when the event is emitted **for the first time**. Any subsequent emits doesn't change state of the promise nor the value. It comes from the nature of the Promise obviously, but keep this in mind as only one part of your code should emit that particular event.
 
-For the actual Promise implementation I have picked [Bluebird] library. It's not very well known just yet, but I am actively using it and I love it! Whole library is also made available to you through `require('promised-land').Promise` so you don't need to actually add .
+For the actual Promise implementation I have picked [Bluebird] library. It's not very well known just yet, but I am actively using it and I love it! Whole library is also made available to you through `require('promised-land').Promise` so you don't need to actually add dependency to your project. It's up to you.
 
 ### Repeated events
 
@@ -88,6 +88,9 @@ Land.stream('repeatedEvent').onValue(function(val) {
 	doSomethingRepeatedly();
 });
 ```
+
+Bacon library is also made available through `require('promised-land).Bacon` if you need to create streams on your own. 
+
 ## Usage tips
 
 Learn some other uses of the *promised-land*.
