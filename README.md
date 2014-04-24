@@ -18,6 +18,10 @@ Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] o
 
 *Please note, that this is very basic implementation (but fully functional) of the idea and it definitely needs some polishing and bug fixing. Feel free to issue ticket or create pull request with your improvements.*
 
+## TL:DR
+
+Stop caring about events being emit too soon. Watch for them with the Promise !
+
 ## Features
 
  - Inherited from [EventEmitter2].
@@ -48,7 +52,7 @@ Most viable solution to the issue of being late for the event is called [Promise
 
 ### Let's roll !
 
-It's time to move this idea little bit further. You want to keep your code modular, but still able to utilize advantages of Promise? It would be great to have some single shared object (similar to emitter) that serves as connection point between modules but doesn't really know about any modules on it's own.And here comes **Promised Land**, check this out:
+It's time to move this idea little bit further. You want to keep your code modular, but still able to utilize advantages of Promise? It would be great to have some single shared object (similar to emitter) that serves as connection point between modules but doesn't really know about any modules on it's own.And here comes the **Promised Land**, check this out:
 
 ```js
 // in your database module nothing new happens...
@@ -65,13 +69,13 @@ Land.promise('databaseConnected').then(function(db) {
 
 That's right. It's simple as that! You might wonder what is it good for. Well, just emit the event as you are used to and the *promised-land* will take care of the rest. You can ask for the Promise before event is published or after. That means you don't need to think about any initialization order anymore.
 
-Promise resolution is made when the event is emitted for the first time. Any subsequent emits doesn't change state of the promise nor the value. It's nature of the Promise, but keep this in mind as only one part of your code should emit that particular event.
+Promise resolution is made when the event is emitted **for the first time**. Any subsequent emits doesn't change state of the promise nor the value. It comes from the nature of the Promise obviously, but keep this in mind as only one part of your code should emit that particular event.
 
-For the actual Promise implementation I have picked [Bluebird] library. It's not very well known just yet, but I am actively using it and I love it! Whole library is  at your service at `require('promised-land').Promise` in case you want to create your own promises with ease.
+For the actual Promise implementation I have picked [Bluebird] library. It's not very well known just yet, but I am actively using it and I love it! Whole library is also made available to you through `require('promised-land').Promise` so you don't need to actually add .
 
 ### Repeated events
 
-Now this is much more straightforward and as you may know, promises are not helpful for this at all since repeated resolution of promise is not causing anything. Promised land is inherited from [EventEmitter2]. You can use any of the methods provided by that library like `on` or `many` directly.
+Now this is much more straightforward and as you may know, promises are not helpful for this at all. Repeated resolution of promise is not simply possible. Promised land is inherited from [EventEmitter2]. That means you can use any of the methods provided by that library like `on` or `many` directly.
 
 **Please note**, current version of *promised-land* doesn't support `wildcard` option of *EventEmitter*, but it's definitely planned in future versions.
 
@@ -86,9 +90,9 @@ Land.stream('repeatedEvent').onValue(function(val) {
 ```
 ## Usage tips
 
-Just collection of tips you can achieve using *promised-land*.
+Learn some other uses of the *promised-land*.
 
-### Private land
+### Protected land
 
 Having the *promised-land* accessible globally is surely neat, but you may have some privacy concerns here. Anybody can access your land and emit events or steal your promises. But worry not, there is very simple solution!
 
@@ -105,8 +109,11 @@ You can pass `myPrivateLand` variable around in your code however you like and n
 In some cases you might want to publish one-time event with some faulty state. Database connection may fail which you might want to handle with application shut down. In that case simply emit event with  value being instance of object inherited from the `Error`.
 
 ```js
-Land.emit('queryFailed', new QueryFailError());
-Land.promise('queryFailed').catch(QueryFailError, (function(err) {
+Land.emit('databaseConnected', new ConnectionError());
+// somewhere else...
+Land.promise('databaseConnected').then(function(db) {
+	workWithDatabase();
+}).catch(ConnectionError, (function(err) {
 	handleError();
 }));
 ```
@@ -120,7 +127,13 @@ Land.promiseAll('event1', 'event2', 'event3').then(function(values) {
 	doSomethingWhenEverythingIsReady();
 });
 
-// that is equivalent to...
+// or
+
+Land.promiseAll('event1', 'event2', 'event3').spread(function(val1, val2, val3) {
+	doSomethingWhenEverythingIsReady();
+});
+
+// it is equivalent to...
 
 Promise.all([
 	Land.promise('event1'),
@@ -132,3 +145,8 @@ Promise.all([
 ## Testing
 
 To run the tests, start the `npm test` in command line.
+
+## Browser support
+
+In the `./lib` folder you can find bundles made using [Browserify](http://browserify.org/). It's not optimal for now, but should work correctly. I will add tests for these bundles eventually.
+
