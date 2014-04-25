@@ -145,9 +145,9 @@ Promise.all([
 ]).then(function(values) {...})
 ```
 
-### Callback hell
+### Transform event from custom emitter
 
-This may be issue for the Bluebird and I am not sure if other libraries have solution, but if you are using Bluebird, you may have encounter situation like this before:
+This may be issue for the Bluebird and I am not sure if other libraries have solution, but if you are using Bluebird, you may have encountered situation like this before:
 
 ```js
 return new Promise(function(resolve) {
@@ -155,13 +155,24 @@ return new Promise(function(resolve) {
 });
 ```
 
-You some emitter of your own and you just want to make it into Promise so it can fit into your promise chain easily. Thanks to the *promised-land*, you have much more easy way:
+It's so boring to write this all around and increase the unnecessary indentation. You may have some object that emits important event and you want to turn that into Promise. Thanks to the *promised-land*, you have much more easy way:
 
-```
+```js
 return Land.promise('someEvent', emitter);
 ```
 
-It is simple as that. Just pass emitter object in second argument and the promise will be fulfilled from the event within this emitter. This way it skips usual workflow and doesn't care about its internal emitter. Note that the *promised-land* doesn't record these promises in any way. It's just convenience to make your code look cleaner and nicer.
+Just pass in the emitter object in second argument and the promise will be fulfilled from the event within this emitter. This way it skips usual workflow and doesn't care about its internal emitter. Note that the *promised-land* doesn't record these promises in any way. It's just convenience method to make your code look cleaner and nicer.
+
+**Please note**: As for now, it looks for `once` method on passed in emitter object. If there is no `once` method, exception is thrown. I am planning to make this more transparent in future releases.
+
+Same as for regular workflow, created promise can be also rejected, if event is emitted with Error object.
+
+```js
+Land.promise('someEvent', emitter).catch(TypeError, function(err) {
+	handleError();
+});
+emitter.emit 'someEvent', new TypeError('failed event')
+```
 
 ## Running Tests
 

@@ -24,8 +24,11 @@ PromisedLand = ->
 			return Promise.reject new TypeError 'missing event argument for promise call'
 
 		# With customEmitter specified, promise is following event from there
-		if customEmitter? and customEmitter.once? then return new Promise (resolve) ->
-			customEmitter.once ev, resolve
+		if typeof customEmitter is "object"
+			unless typeof customEmitter.once is "function"
+				throw new TypeError 'specified emitter is missing once method'
+			return new Promise (resolve, reject) ->
+				customEmitter.once ev, (val) -> promiseResolver val, resolve, reject
 
 		# Promise was requested in the past, return it immediately
 		return promises[ev] if promises[ev]

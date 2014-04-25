@@ -33,5 +33,5 @@ function build(dest, options) {
   });
 }
 
-build(__dirname + '/../lib/promised-land-browser.js');
-build(__dirname + '/../lib/promised-land-browser.min.js', { minify: true });
+build(__dirname + '/../promised-land-browser.js');
+build(__dirname + '/../promised-land-browser.min.js', { minify: true });

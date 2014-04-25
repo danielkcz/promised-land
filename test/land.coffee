@@ -75,15 +75,25 @@ describe 'Promised land', ->
 			@land.emit 'test2', new TypeError('inherited')
 			@land.promise('test2').should.be.rejectedWith Error, /inherited/
 
-		it 'should fulfill promise using emitter from the second argument when present', ->
-			emitter = new (require('eventemitter2').EventEmitter2)
-			@land.promise('test', emitter).then ->
-				throw new chai.AssertionError('test event should not fulfill promise')
-			@land.emit 'test'
-			
-			promise = @land.promise('test2', emitter).then
-			emitter.emit 'test2'
-			return promise
+		describe ':: custom emitter', ->
+
+			it 'should fulfill promise instead of internal emitter', ->
+				emitter = new (require('eventemitter2').EventEmitter2)
+				@land.promise('test', emitter).then ->
+					throw new chai.AssertionError('promise fulfilled from internal emitter')
+				@land.emit 'test'
+				
+				promise = @land.promise('test2', emitter).then
+				emitter.emit 'test2'
+				return promise
+
+			it 'should throw error when missing `once` method', ->
+				@land.promise.bind(null, 'test', {}).should.throw TypeError, /missing once/
+
+			it 'should reject promise when event is emitted with Error instance', ->
+				emitter = new (require('eventemitter2').EventEmitter2)
+				@land.promise('test', emitter).should.be.eventually.rejectedWith TypeError, /custom/
+				emitter.emit 'test', new TypeError 'error from custom emitter'
 
 	describe '.promiseAll', ->
 
