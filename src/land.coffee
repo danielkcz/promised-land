@@ -1,3 +1,5 @@
+"use strict"
+
 Promise = require 'bluebird'
 Bacon = require 'baconjs'
 EventEmitter = require('eventemitter2').EventEmitter2
