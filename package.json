@@ -1,7 +1,7 @@
 {
   "name": "promised-land",
   "description": "Follow the road to the Promised Land with Bluebird while eating some Bacon on the way.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "./src/land.coffee",
   "keywords": [

@@ -18,7 +18,7 @@ Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] o
 
 *Please note, that this is very basic implementation (but fully functional) of the idea and it definitely needs some polishing and bug fixing. Feel free to issue ticket or create pull request with your improvements.*
 
-## TL:DR
+## TL;DR
 
 Stop caring about events being emit too soon. Watch for them with the Promise !
 
@@ -116,9 +116,9 @@ Land.emit('databaseConnected', new ConnectionError());
 // somewhere else...
 Land.promise('databaseConnected').then(function(db) {
 	workWithDatabase();
-}).catch(ConnectionError, (function(err) {
+}).catch(ConnectionError, function(err) {
 	handleError();
-}));
+});
 ```
 
 ### Multiple promised events
@@ -145,10 +145,34 @@ Promise.all([
 ]).then(function(values) {...})
 ```
 
-## Testing
+### Callback hell
 
-To run the tests, start the `npm test` in command line.
+This may be issue for the Bluebird and I am not sure if other libraries have solution, but if you are using Bluebird, you may have encounter situation like this before:
 
+```js
+return new Promise(function(resolve) {
+	emitter.once('someEvent', resolve);
+});
+```
+
+You some emitter of your own and you just want to make it into Promise so it can fit into your promise chain easily. Thanks to the *promised-land*, you have much more easy way:
+
+```
+return Land.promise('someEvent', emitter);
+```
+
+It is simple as that. Just pass emitter object in second argument and the promise will be fulfilled from the event within this emitter. This way it skips usual workflow and doesn't care about its internal emitter. Note that the *promised-land* doesn't record these promises in any way. It's just convenience to make your code look cleaner and nicer.
+
+## Running Tests
+
+1) Install the development dependencies:
+
+    npm install
+
+2) Run the tests:
+
+    npm test
+    
 ## Browser support
 
 In the `./lib` folder you can find bundles made using [Browserify](http://browserify.org/). It's not optimal for now, but should work correctly. I will add tests for these bundles eventually.

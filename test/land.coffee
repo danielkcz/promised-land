@@ -72,6 +72,18 @@ describe 'Promised land', ->
 		it 'should reject promise when event is emitted with Error instance', ->
 			@land.emit 'test', new Error('testing')
 			@land.promise('test').should.be.rejectedWith Error, /testing/
+			@land.emit 'test2', new TypeError('inherited')
+			@land.promise('test2').should.be.rejectedWith Error, /inherited/
+
+		it 'should fulfill promise using emitter from the second argument when present', ->
+			emitter = new (require('eventemitter2').EventEmitter2)
+			@land.promise('test', emitter).then ->
+				throw new chai.AssertionError('test event should not fulfill promise')
+			@land.emit 'test'
+			
+			promise = @land.promise('test2', emitter).then
+			emitter.emit 'test2'
+			return promise
 
 	describe '.promiseAll', ->
 
@@ -80,7 +92,7 @@ describe 'Promised land', ->
 		beforeEach ->
 			@land = Land.create()
 
-		it 'should respond to `promise` method', ->
+		it 'should respond to `promiseAll` method', ->
 			@land.should.respondTo "promiseAll"
 
 		it 'should return promise', ->
@@ -127,4 +139,3 @@ describe 'Promised land', ->
 			@land.stream('test').onValue spy
 			@land.emit 'test'
 			spy.should.have.been.calledOnce
-
