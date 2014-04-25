@@ -175,5 +175,5 @@ It is simple as that. Just pass emitter object in second argument and the promis
     
 ## Browser support
 
-In the `./lib` folder you can find bundles made using [Browserify](http://browserify.org/). It's not optimal for now, but should work correctly. I will add tests for these bundles eventually.
+Download browser bundle from Release tab. These are made using [Browserify](http://browserify.org/). It's not optimal for now, but should work correctly. I will add tests for these bundles eventually.
 
