@@ -1,4 +1,5 @@
 node_modules
 bin
-lib
-
+promised-land.*
+.travis.yml
+.gitignore
