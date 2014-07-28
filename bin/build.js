@@ -6,8 +6,13 @@ var uglifyjs   = require('uglify-js');
 var browserify = require('browserify');
 
 function bundle(file, callback) {
-  var opts = { standalone: 'promised-land' };
-  browserify(file).transform('coffeeify').bundle(opts, callback);
+  var b = browserify({
+    entries: file,
+    extensions: ['.coffee'],
+    standalone: 'promised-land'
+  });
+  b.transform('coffeeify');
+  return b.bundle(callback);
 }
 
 function addBanner(source) {

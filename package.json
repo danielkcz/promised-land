@@ -11,7 +11,7 @@
     "frp",
     "baconjs",
     "promise",
-    "bluebird"    
+    "bluebird"
   ],
   "author": {
     "name": "FredyC",
@@ -25,19 +25,19 @@
     "url": "https://github.com/FredyC/promised-land.git"
   },
   "dependencies": {
-    "baconjs": "^0.7.10",
-    "bluebird": "^1.2.3",
-    "eventemitter2": "^0.4.13"
+    "baconjs": "^0.7.19",
+    "bluebird": "^2.2.2",
+    "eventemitter2": "^0.4.14"
   },
   "devDependencies": {
+    "browserify": "^5.9.1",
     "chai": "^1.9.1",
-    "mocha": "^1.18.2",
-    "coffeeify": "^0.6.0",
-    "browserify": "^3.44.1",
-    "coffee-script": "^1.7.1",
-    "sinon-chai": "^2.5.0",
-    "sinon": "^1.9.1",
     "chai-as-promised": "^4.1.1",
+    "coffee-script": "^1.7.1",
+    "coffeeify": "^0.7.0",
+    "mocha": "^1.18.2",
+    "sinon": "^1.9.1",
+    "sinon-chai": "^2.5.0",
     "uglify-js": "^2.4.13"
   },
   "scripts": {
