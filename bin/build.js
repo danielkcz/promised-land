@@ -5,12 +5,14 @@ var path       = require('path');
 var uglifyjs   = require('uglify-js');
 var browserify = require('browserify');
 
-function bundle(file, callback) {
-  var b = browserify({
+function bundle(file, options, callback) {
+  bundleOptions = {
     entries: file,
     extensions: ['.coffee'],
-    standalone: 'promised-land'
-  });
+    standalone: 'promised-land',
+    bundleExternal: !options.solo
+  };
+  var b = browserify(bundleOptions);
   b.transform('coffeeify');
   return b.bundle(callback);
 }
@@ -30,7 +32,7 @@ function build(dest, options) {
 
   var src = __dirname + '/../src/land.coffee';
 
-  bundle(src, function (err, bundled) {
+  bundle(src, options, function (err, bundled) {
     var bannered = addBanner(bundled);
     var content = options.minify ? minify(bannered) : bannered;
     fs.writeFileSync(dest, content);
@@ -40,3 +42,5 @@ function build(dest, options) {
 
 build(__dirname + '/../promised-land-browser.js');
 build(__dirname + '/../promised-land-browser.min.js', { minify: true });
+build(__dirname + '/../promised-land-solo.js', { solo: true });
+build(__dirname + '/../promised-land-solo-min.js', { solo: true, minify: true });
