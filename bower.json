@@ -1,0 +1,35 @@
+{
+  "name": "promised-land",
+  "description": "Follow the road to the Promised Land with Bluebird while eating some Bacon on the way.",
+  "version": "0.2.0",
+  "license": "MIT",
+  "authors": [
+    "FredyC <fredy.c@seznam.cz>"
+  ],
+  "main": "lib/land-browser.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "events",
+    "eventemitter",
+    "pubsub",
+    "frp",
+    "baconjs",
+    "promise",
+    "bluebird"
+  ],
+  "homepage": "https://github.com/FredyC/promised-land",
+  "ignore": [
+    "node_modules",
+    "bin",
+    "test",
+    "src",
+    ".npmignore",
+    ".travis.yml",
+    "package.json",
+    ".gitignore"
+  ]
+}
