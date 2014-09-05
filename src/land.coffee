@@ -1,39 +1,31 @@
-"use strict"
+'use strict'
 
-Promise = require 'bluebird'
-Bacon = require 'baconjs'
-EventEmitter = require('eventemitter2').EventEmitter2
+PromisedLand = (opts) ->
 
-PromisedLand = ->
-	# Base object is based on eventemitter prototype
-	land = Object.create EventEmitter.prototype
+	# If unsupported object is passed in, create own one
+	unless typeof emitter?.emit is 'function'
+		land = emitter = Object.create EventEmitter.prototype
+		EventEmitter.call land, {wildcard: false}
 
-	# Store the constructor 
+	# Otherwise use emitter object as prototype
+	else
+		land = Object.create emitter
+
 	land.constructor = PromisedLand
 
-	# Initialize emitter
-	EventEmitter.call land, {wildcard: false}
-	
-	# List of promises created in the past
+	# List of promises created so far
 	promises = Object.create null
 
 	# Purpose of this method is to return Promise, that is following
 	# first emit of given event. Any subsequent emits are ignored
-	# by this. Obvious use is one time event used to track some 
+	# by this. Obvious use is for one time events to track some
 	# (usually async) state in the application.
-	land.promise = (ev, customEmitter) ->
+	land.promise = (ev) ->
 		unless arguments.length and ev isnt null
 			return Promise.reject new TypeError 'missing event argument for promise call'
 
-		# With customEmitter specified, promise is following event from there
-		if typeof customEmitter is "object"
-			unless typeof customEmitter.once is "function"
-				throw new TypeError 'specified emitter is missing once method'
-			return new Promise (resolve, reject) ->
-				customEmitter.once ev, (val) -> promiseResolver val, resolve, reject
-
 		# Promise was requested in the past, return it immediately
-		return promises[ev] if promises[ev]
+		return promise if promise = promises[ev]
 
 		# When promise is requested before event was emitted
 		# new one has to be created and attach handler to wait for the event
@@ -51,6 +43,21 @@ PromisedLand = ->
 			return Promise.reject new TypeError 'no arguments given for promiseAll call'
 
 		return Promise.all list
+
+	# Simple convenience method to transform some event to promise
+	# Supply emitter object that supports `once` or `on` method and
+	# get promise back. Result of this is not stored anywhere.
+	land.promiseNow = (ev, customEmitter) ->
+		unless typeof customEmitter is "object"
+			throw new TypeError 'missing emitter object'
+		unless hasOnce = (typeof customEmitter.once is "function") and hasOn = (typeof customEmitter.on is "function")
+			throw new TypeError 'specified emitter is missing once or on method'
+		return new Promise (resolve, reject) ->
+			handler = (val) -> promiseResolver val, resolve, reject
+			if hasOnce
+				customEmitter.once ev, handler
+			else if hasOn
+				customEmitter.on ev, handler
 
 	# Decide if promise should be resolved or rejected based on value
 	promiseResolver = (value, resolve, reject) ->
@@ -76,7 +83,7 @@ PromisedLand = ->
 			# Create new promise, that gets resolved right away
 			promises[ev] = new Promise promiseResolver.bind null, value
 
-		# Call original emit			
+		# Call original emit
 		$emit.apply land, arguments
 
 	return land
@@ -85,8 +92,5 @@ PromisedLand = ->
 module.exports = PromisedLand()
 
 # Export function to create separate promised land for custom use
-module.exports.create = ->
-	PromisedLand()
-
-module.exports.Promise = Promise
-module.exports.Bacon = Bacon
+module.exports.create = (emitter) ->
+	PromisedLand emitter

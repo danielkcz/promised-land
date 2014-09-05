@@ -1,6 +1,6 @@
 # Promised Land
 
-Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] on the way. 
+Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] on the way.
 
 [![Build Status](https://travis-ci.org/FredyC/promised-land.svg)](https://travis-ci.org/FredyC/promised-land)[![Dependencies status](https://david-dm.org/FredyC/promised-land/status.svg)](https://david-dm.org/FredyC/promised-land#info=dependencies)[![devDependency Status](https://david-dm.org/FredyC/promised-land/dev-status.svg)](https://david-dm.org/FredyC/promised-land#info=devDependencies)
 
@@ -16,11 +16,9 @@ Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] o
 [event emitters]:http://javascriptplayground.com/blog/2014/03/event-emitter/
 [design patterns]:http://addyosmani.com/resources/essentialjsdesignpatterns/book/
 
-*Please note, that this is very basic implementation* (***but fully functional***) *of the idea and it definitely needs some polishing and bug fixing. Please check out* [***Trello board***](https://trello.com/b/AtslGtow/promised-land) * for planned features and next development steps. You can also leave a comment there.*
-
 ## TL;DR
 
-Stop caring about events being emit too soon. Watch for them with the Promise !
+Do you are about events being emit before you can listen to them? Watch for them with the Promise !
 
 ## Features
 
@@ -89,7 +87,7 @@ Land.stream('repeatedEvent').onValue(function(val) {
 });
 ```
 
-Bacon library is also made available through `require('promised-land).Bacon` if you need to create streams on your own. 
+Bacon library is also made available through `require('promised-land).Bacon` if you need to create streams on your own.
 
 ## Usage tips
 
@@ -183,7 +181,7 @@ emitter.emit 'someEvent', new TypeError('failed event')
 2) Run the tests:
 
     npm test
-    
+
 ## Browser support
 
 Download browser bundle from Release tab. These are made using [Browserify](http://browserify.org/). It's not optimal for now, but should work correctly. I will add tests for these bundles eventually.

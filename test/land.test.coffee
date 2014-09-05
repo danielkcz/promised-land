@@ -29,9 +29,21 @@ describe 'Promised land', ->
 		Land.emit 'test'
 		spy.should.have.been.calledOnce
 
-	describe '.promise', ->
+	describe 'base emitter', ->
 
-		Promise = require 'bluebird'
+		beforeEach ->
+			@emitter = new (require('eventemitter2').EventEmitter2)
+			@land = Land.create @emitter
+
+		it 'should set prototype to passed emitter object', ->
+			Object.getPrototypeOf(@land).should.equal @emitter
+
+		it 'should fulfill promise using this emitter', ->
+			promise = @land.promise('test').then
+			@emitter.emit 'test2'
+			return promise
+
+	describe '.promise', ->
 
 		beforeEach ->
 			@land = Land.create()
@@ -39,9 +51,9 @@ describe 'Promised land', ->
 		it 'should respond to `promise` method', ->
 			@land.should.respondTo "promise"
 
-		it 'should return promise', ->
-			actual = @land.promise().catch ->
-			Promise.is(actual).should.be.true
+		it 'should return promise (aka thenable) object', ->
+			(actual = @land.promise('test')).should.respondTo 'then'
+			actual.catch? -> # Avoid error for unhandled errors
 
 		it 'should reject promise when no event name passed in', ->
 			@land.promise().should.be.rejectedWith(TypeError)
@@ -82,7 +94,7 @@ describe 'Promised land', ->
 				@land.promise('test', emitter).then ->
 					throw new chai.AssertionError('promise fulfilled from internal emitter')
 				@land.emit 'test'
-				
+
 				promise = @land.promise('test2', emitter).then
 				emitter.emit 'test2'
 				return promise

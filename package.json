@@ -1,17 +1,16 @@
 {
   "name": "promised-land",
-  "description": "Follow the road to the Promised Land with Bluebird while eating some Bacon on the way.",
-  "version": "0.1.2",
+  "description": "Follow the road to the Promised Land and don't be lost anymore.",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "./src/land.coffee",
   "keywords": [
     "events",
     "eventemitter",
+    "emitter",
     "pubsub",
     "frp",
-    "baconjs",
-    "promise",
-    "bluebird"
+    "promise"
   ],
   "author": {
     "name": "FredyC",
@@ -25,8 +24,6 @@
     "url": "https://github.com/FredyC/promised-land.git"
   },
   "dependencies": {
-    "baconjs": "^0.7.19",
-    "bluebird": "^2.2.2",
     "eventemitter2": "^0.4.14"
   },
   "devDependencies": {
