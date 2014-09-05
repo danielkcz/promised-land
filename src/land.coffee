@@ -8,18 +8,18 @@ PromisedLand = ->
 	# Base object is based on eventemitter prototype
 	land = Object.create EventEmitter.prototype
 
-	# Store the constructor 
+	# Store the constructor
 	land.constructor = PromisedLand
 
 	# Initialize emitter
 	EventEmitter.call land, {wildcard: false}
-	
+
 	# List of promises created in the past
 	promises = Object.create null
 
 	# Purpose of this method is to return Promise, that is following
 	# first emit of given event. Any subsequent emits are ignored
-	# by this. Obvious use is one time event used to track some 
+	# by this. Obvious use is one time event used to track some
 	# (usually async) state in the application.
 	land.promise = (ev, customEmitter) ->
 		unless arguments.length and ev isnt null
@@ -59,9 +59,13 @@ PromisedLand = ->
 		else
 			resolve value
 
+	streams = Object.create null
+
 	# Very basic support for the streams (FRP)
 	land.stream = (ev) ->
-		return Bacon.fromEventTarget this, ev
+		unless stream = streams[ev]
+			streams[ev] = stream = Bacon.fromEventTarget this, ev
+		return stream
 
 	$emit = land.emit
 	land.emit = (ev) ->
@@ -76,7 +80,7 @@ PromisedLand = ->
 			# Create new promise, that gets resolved right away
 			promises[ev] = new Promise promiseResolver.bind null, value
 
-		# Call original emit			
+		# Call original emit
 		$emit.apply land, arguments
 
 	return land

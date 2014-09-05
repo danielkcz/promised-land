@@ -82,7 +82,7 @@ describe 'Promised land', ->
 				@land.promise('test', emitter).then ->
 					throw new chai.AssertionError('promise fulfilled from internal emitter')
 				@land.emit 'test'
-				
+
 				promise = @land.promise('test2', emitter).then
 				emitter.emit 'test2'
 				return promise
@@ -149,3 +149,7 @@ describe 'Promised land', ->
 			@land.stream('test').onValue spy
 			@land.emit 'test'
 			spy.should.have.been.calledOnce
+
+		it 'should return same stream object for identical event', ->
+			expected = @land.stream('test')
+			@land.stream('test').should.equal expected
