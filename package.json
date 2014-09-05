@@ -1,9 +1,9 @@
 {
   "name": "promised-land",
   "description": "Follow the road to the Promised Land with Bluebird while eating some Bacon on the way.",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "license": "MIT",
-  "main": "./src/land.coffee",
+  "main": "./lib/land.js",
   "keywords": [
     "events",
     "eventemitter",
@@ -25,8 +25,8 @@
     "url": "https://github.com/FredyC/promised-land.git"
   },
   "dependencies": {
-    "baconjs": "^0.7.19",
-    "bluebird": "^2.2.2",
+    "baconjs": "^0.7.22",
+    "bluebird": "^2.3.2",
     "eventemitter2": "^0.4.14"
   },
   "devDependencies": {
@@ -41,6 +41,7 @@
     "uglify-js": "^2.4.13"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "node_modules/.bin/mocha",
+    "prepublish": "node bin/build.js"
   }
 }

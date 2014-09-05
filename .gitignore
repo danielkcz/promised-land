@@ -1,3 +1,3 @@
 node_modules
 *.sublime-workspace
-promised-land-browser.*
+promised-land-*.js

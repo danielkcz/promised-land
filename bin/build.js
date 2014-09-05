@@ -4,39 +4,60 @@ var fs         = require('fs');
 var path       = require('path');
 var uglifyjs   = require('uglify-js');
 var browserify = require('browserify');
-
-function bundle(file, callback) {
-  var b = browserify({
-    entries: file,
-    extensions: ['.coffee'],
-    standalone: 'promised-land'
-  });
-  b.transform('coffeeify');
-  return b.bundle(callback);
-}
-
-function addBanner(source) {
-  var banner = fs.readFileSync(__dirname + '/banner').toString();
-  return banner + source;
-}
+var banner     = fs.readFileSync(__dirname + '/../LICENSE').toString()
+var src        = __dirname + '/../src/land.coffee';
+var target     = __dirname + '/../lib/land';
+var pkg        = require('../package.json');
 
 function minify(source) {
-  var opts = { fromString: true };
+  var opts = { fromString: true, mangle: {
+    toplevel: true
+  }};
   return uglifyjs.minify(source, opts).code;
 }
 
-function build(dest, options) {
-  options = options || {};
+var bannerLines = banner.split("\n");
+for (var i = 0, ii = bannerLines.length; i < ii; i++) {
+  bannerLines[i] = "* " + bannerLines[i]
+};
+bannerLines.unshift("/*");
+bannerLines.push("* ", "* Version: "+pkg['version'], "*/", "");
+banner = bannerLines.join("\n");
 
-  var src = __dirname + '/../src/land.coffee';
-
-  bundle(src, function (err, bundled) {
-    var bannered = addBanner(bundled);
-    var content = options.minify ? minify(bannered) : bannered;
-    fs.writeFileSync(dest, content);
-    console.log('built', path.resolve(dest));
+var writeOut = function (suffix, content, cb) {
+  var fileName = path.resolve(target + suffix);
+  fs.writeFile(fileName, content, function(err) {
+    if (err) {
+      console.log("Error while writing to: ", fileName);
+      console.error(err.stack || err);
+    }
+    else {
+      console.log('Written file '+fileName);
+    }
+    cb && cb();
   });
 }
 
-build(__dirname + '/../promised-land-browser.js');
-build(__dirname + '/../promised-land-browser.min.js', { minify: true });
+var coffee = require('coffee-script');
+var compiled = coffee.compile(fs.readFileSync(src).toString(), {
+  bare: true
+});
+writeOut('.js', banner + compiled, function() {
+
+  var bundleOptions = {
+    entries: target + '.js',
+    standalone: 'land',
+  };
+
+  browserify(bundleOptions).bundle(function(err, buf) {
+    if (err) {
+      console.log("Error during bundling");
+      return console.error(err.stack || err);
+    }
+    var out = buf.toString();
+    writeOut('-browser.js', out);
+    writeOut('-browser.min.js', banner + minify(out));
+  });
+});
+
+writeOut('.min.js', banner + minify(compiled));
