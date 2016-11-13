@@ -16,7 +16,8 @@ Follow the road to the Promised Land with [Bluebird] while eating some [Bacon] o
 [event emitters]:http://javascriptplayground.com/blog/2014/03/event-emitter/
 [design patterns]:http://addyosmani.com/resources/essentialjsdesignpatterns/book/
 
-*Please note, that this is very basic implementation* (***but fully functional***) *of the idea and it definitely needs some polishing and bug fixing. Please check out* [***Trello board***](https://trello.com/b/AtslGtow/promised-land) * for planned features and next development steps. You can also leave a comment there.*
+# DEPRECATED !!!
+> _This was never that good idea in general. Use at your own risk. I am not going to maintain it anymore._
 
 ## TL;DR
 
